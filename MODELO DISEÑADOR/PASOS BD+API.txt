@@ -1,0 +1,34 @@
+🟢 PLAN REAL (SIN COMPLICAR)
+
+ESTO ES DE LA BD+ API
+Vamos a hacerlo en micro-pasos:
+
+PASO A
+
+👉 Conectar la API a PostgreSQL
+
+PASO B
+
+👉 Crear clases (POO) para:
+
+Usuario
+
+Conversación
+
+Mensaje
+
+PASO C
+
+👉 Endpoints mínimos:
+
+Crear conversación
+
+Guardar mensaje
+
+Consultar historial
+
+Filtros (3)
+
+PASO D
+
+👉 Subir la API a la nube (Railway / Render)
