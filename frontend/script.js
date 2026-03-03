@@ -5,6 +5,7 @@ async function cargarHistorial() {
     const response = await fetch(`${API_URL}/mensajes/conversacion/${CONVERSACION_ID}`);
     const data = await response.json();
 
+/mensajes/conversacion/{}
     const chatBox = document.getElementById("chatBox");
     chatBox.innerHTML = "";
 
