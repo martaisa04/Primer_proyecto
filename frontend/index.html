@@ -2,25 +2,158 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Asistente IA</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Soporte TI</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.chat-box {
+    background: white;
+    height: 400px;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+.mensaje {
+    margin: 8px 0;
+}
+
+.user {
+    text-align: right;
+    color: blue;
+}
+
+.assistant {
+    text-align: left;
+    color: green;
+}
+
+input {
+    width: 75%;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-    <h2>Asistente Soporte Tecnológico</h2>
+<h2>Asistente Soporte Tecnológico</h2>
 
-    <div id="chatBox" class="chat-box"></div>
+<div class="chat-box" id="chatBox"></div>
 
-    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje">
-    <button onclick="enviarMensaje()">Enviar</button>
-
-    <div id="errorMensaje"></div>
+<input type="text" id="mensajeInput" placeholder="Escribe tu mensaje">
+<button onclick="enviarMensaje()">Enviar</button>
 
 </div>
 
-<script src="script.js"></script>
+<script>
+
+const API_URL = "https://primer-proyecto-98hw.onrender.com/";
+const CONVERSACION_ID = 8;  // Usa una conversación existente
+
+async function enviarMensaje() {
+
+    const input = document.getElementById("mensajeInput");
+    const mensaje = input.value.trim();
+
+    if (mensaje === "") {
+        alert("No puedes enviar mensaje vacío");
+        return;
+    }
+
+    agregarMensaje("user", mensaje);
+    input.value = "";
+
+    try {
+
+        const response = await fetch(`${API_URL}/mensajes/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                conversacion_id: CONVERSACION_ID,
+                contenido: mensaje,
+                rol: "user"
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            console.log(error);
+            alert("Error en API");
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log("Guardado:", data);
+
+        // Aquí podrías llamar TinyLlama después
+        agregarMensaje("assistant", "Mensaje guardado correctamente");
+
+    } catch (error) {
+        console.error("Error:", error);
+        alert("No conecta con la API");
+    }
+}
+
+function agregarMensaje(rol, texto) {
+
+    const chatBox = document.getElementById("chatBox");
+
+    const div = document.createElement("div");
+    div.classList.add("mensaje", rol);
+
+    div.innerText = texto;
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function cargarHistorial() {
+
+    const response = await fetch(
+        `${API_URL}/mensajes/conversacion/${CONVERSACION_ID}`
+    );
+
+    const mensajes = await response.json();
+
+    const chatBox = document.getElementById("chatBox");
+    chatBox.innerHTML = "";
+
+    mensajes.forEach(m => {
+        agregarMensaje(m.rol, m.contenido);
+    });
+}
+
+window.onload = cargarHistorial;
+
+</script>
+
 </body>
 </html>

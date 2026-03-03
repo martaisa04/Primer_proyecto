@@ -31,4 +31,4 @@ def guardar_mensaje(db: Session, data: MensajeCreate):
 def historial_por_conversacion(db: Session, conversacion_id: int):
     return db.query(Mensaje).filter(
         Mensaje.conversacion_id == conversacion_id
-    ).order_by(Mensaje.creado_en).all()
+    ).order_by(Mensaje.creado_en.asc()).all()
