@@ -1,0 +1,185 @@
+function agregarMensaje(rol, contenido) {
+    const chatBox = document.getElementById("chatBox");
+    const div = document.createElement("div");
+
+    div.classList.add("message");
+
+    if (rol === "usuario") {
+        div.classList.add("user");
+    } else {
+        div.classList.add("assistant");
+    }
+
+    div.innerText = contenido;
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Asistente IA - Soporte Tecnológico</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h5>Conversaciones</h5>
+
+        <input type="text" id="filtroInput"
+               placeholder="Buscar..."
+               onkeyup="filtrarConversaciones()">
+
+        <div id="listaConversaciones"></div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area">
+
+        <div class="chat-header">
+            <span id="tituloConversacion">Seleccione una conversación</span>
+        </div>
+
+        <div id="chatBox" class="chat-messages"></div>
+
+        <div class="chat-input">
+            <input type="text"
+                   id="mensajeInput"
+                   placeholder="Escribe tu mensaje...">
+
+            <button onclick="enviarMensaje()">Enviar</button>
+        </div>
+
+        <div id="errorMensaje" class="error-text"></div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1f1f2e, #2b2b40);
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: #202032;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar input {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 15px;
+}
+
+.conversacion-item {
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.conversacion-item:hover {
+    background-color: #343456;
+}
+
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f6f9;
+}
+
+.chat-header {
+    padding: 15px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.message {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.2s ease-in;
+}
+
+.user {
+    background-color: #0d6efd;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+}
+
+.assistant {
+    background-color: #e4e6eb;
+    color: black;
+    margin-right: auto;
+    border-bottom-left-radius: 0;
+}
+
+.chat-input {
+    display: flex;
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #0d6efd;
+    color: white;
+}
+
+.error-text {
+    color: red;
+    padding-left: 20px;
+    font-size: 14px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
